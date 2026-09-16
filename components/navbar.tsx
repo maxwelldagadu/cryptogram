@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@base-ui/react";
 import { Search } from 'lucide-react';
 import { Separator } from "@/components/ui/separator"
+import Link from "next/link";
 
 
 export default function Navbar(){
@@ -10,7 +11,7 @@ export default function Navbar(){
     <div className="w-full flex justify-between items-center gap-5 p-3">
       <div className="w-200 flex justify-start items-center">
         <Image src="/icon.png" alt="crytogram logo" width={90} height={90}/>
-        <h1 className="text-l font-mono md:text-xl lg:text-2xl text-">CRYTOGRAM</h1>
+        <h1 className="text-l font-mono md:text-xl lg:text-2xl text-accent-yellow">CRYTOGRAM</h1>
       </div>
       
       <div className="flex justify-center gap-1 items-center w-full border-2 rounded-4xl bg-light-dark/5">
@@ -22,12 +23,12 @@ export default function Navbar(){
      
       <div  className="w-200 flex justify-end items-center rounded-4xl">
         <div className="flex justify-end items-center gap-4 w-full font-mono font-medium">
-          <Button className="border py-2 px-3.5 rounded-4xl cursor-pointer">
+          <Link href="/signin" className="border py-2 px-3.5 rounded-4xl cursor-pointer text-accent-yellow bg-light-dark/20 hover:text-black hover:bg-accent-yellow">
             Sign In
-          </Button>
-          <Button className="border py-2 px-3.5 rounded-4xl cursor-pointer">
+          </Link>
+          <Link href="/signup" className="border py-2 px-3.5 rounded-4xl cursor-pointer text-accent-yellow bg-light-dark/20 hover:text-black hover:bg-accent-yellow">
             Sign Up
-          </Button>
+          </Link>
         </div>
       </div>
       
