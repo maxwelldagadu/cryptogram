@@ -1,6 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
 import SearchInputField from "./searchInputfield";
+import AuthToggle from "./authtoggle";
+import UserProfile from "./userprofile";
 
 export default function Navbar(){
   return(
@@ -16,18 +17,9 @@ export default function Navbar(){
       
       <SearchInputField className={"hidden sm:flex"}/>
       
-      <div  className="w-100 lg:w-200 flex justify-end items-center rounded-4xl">
-        <div className="flex justify-end items-center gap-4 w-full font-mono font-medium">
-          <Link href="/signin" className="btn">
-            Sign In
-          </Link>
-          <Link href="/signup" className="btn">
-            Sign Up
-          </Link>
-        </div>
-      </div>
-      
+      {/* <AuthToggle/> */}
 
+      <UserProfile/>
     </div>
   )
 }
