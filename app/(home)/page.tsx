@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 
 
-
 export const metadata: Metadata = {
   title: 'CryptoGram',
   description: 'daily crypto insight to stay ahead of the market',
@@ -10,6 +9,6 @@ export const metadata: Metadata = {
 
 export default function Home(){
   return (
-    <div>Home</div>
+    <div className="text-4xl">Home hfhhhhh</div>
   )
 }
