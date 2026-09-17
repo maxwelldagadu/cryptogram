@@ -19,7 +19,8 @@ export default function SignUp() {
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
       email: '',
-      password: ''
+      password: '',
+      confirmPassword: ''
     },
     mode: 'onChange'
   })
