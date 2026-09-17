@@ -26,10 +26,6 @@ export default function UserProfile() {
   return (
     <div  className="w-100 lg:w-200 flex justify-end items-center rounded-4xl">
       <div className="flex justify-end items-center gap-2 w-full font-mono font-medium">
-       <Button className="btn h-full">
-        LogOut
-       </Button>
-
         <DropdownMenu>
           <DropdownMenuTrigger 
             render={
@@ -55,6 +51,10 @@ export default function UserProfile() {
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <Button className="btn h-full">
+          LogOut
+        </Button>
       </div>
     </div>
   )
