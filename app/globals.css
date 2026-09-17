@@ -153,7 +153,7 @@
 @layer utilities{
   .btn{
     @apply text-nowrap  border py-1 px-2 text-sm md:text-base md:py-2 md:px-3.5 lg:px-4 rounded-3xl cursor-pointer
-     text-accent-yellow bg-light-dark/20 hover:text-black hover:bg-accent-yellow ;
+     text-accent-yellow bg-light-dark/20 hover:text-black hover:bg-accent-yellow font-mono font-medium;
   }
 
   .searchInput{
