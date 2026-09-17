@@ -1,0 +1,8 @@
+
+model user {
+  id        Int      @id @default(autoincrement())
+  userId    String 
+  createdAt TimestamptzString @default(now())
+  updatedAt temporal.updatedAtString()
+}
+

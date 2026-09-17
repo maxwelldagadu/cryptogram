@@ -17,9 +17,9 @@ export default function Navbar(){
       
       <SearchInputField className={"hidden sm:flex"}/>
       
-      {/* <AuthToggle/> */}
+      <AuthToggle/>
 
-      <UserProfile/>
+      {/* <UserProfile/> */}
     </div>
   )
 }

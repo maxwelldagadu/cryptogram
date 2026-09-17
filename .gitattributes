@@ -1,0 +1,18 @@
+/database/prisma/contract.json linguist-generated
+/database/prisma/contract.d.ts linguist-generated
+/database/prisma/ops.json linguist-generated
+/database/prisma/migration.json linguist-generated
+migrations/snapshots/**/contract.json linguist-generated
+migrations/snapshots/**/contract.d.ts linguist-generated
+src/prisma/contract.prisma --schema-path database/prisma/contract.json linguist-generated
+src/prisma/contract.prisma --schema-path database/prisma/contract.d.ts linguist-generated
+src/prisma/contract.prisma --schema-path database/prisma/ops.json linguist-generated
+src/prisma/contract.prisma --schema-path database/prisma/migration.json linguist-generated
+--schema-path database/prisma/contract.json linguist-generated
+--schema-path database/prisma/contract.d.ts linguist-generated
+--schema-path database/prisma/ops.json linguist-generated
+--schema-path database/prisma/migration.json linguist-generated
+database/prisma/contract.json linguist-generated
+database/prisma/contract.d.ts linguist-generated
+database/prisma/ops.json linguist-generated
+database/prisma/migration.json linguist-generated
