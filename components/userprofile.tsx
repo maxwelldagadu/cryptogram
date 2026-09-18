@@ -15,14 +15,32 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { UpdateUserProfileImage } from "@/lib/update-profile";
+import { useEffect, useState } from "react";
 
 export default function UserProfile() {
+
+  const [username, setUsername] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    // Get login user;
+    const userDetail =  async() => {
+      const getUser = await authClient.getSession();
+      setUsername(getUser.data?.user.name);
+    }
+
+    userDetail();
+  },[]);
 
   // Router for navigation
   const router = useRouter();
 
   // Getting the currentUserSession setter form store
   const setCurrentUserSession = myStore(state => state.setCurrentUserSession);
+
+  const fallbackName = username?.slice(0,2).toUpperCase();
 
   // Logout functionality
   async function UserLogout(){
@@ -46,20 +64,27 @@ export default function UserProfile() {
           >
             <Avatar>
               <AvatarImage className="object-cover" src="https://i.pravatar.cc/48?pl" alt="user-profile-image"/>
-              <AvatarFallback className="text-muted-foreground text-base">MD</AvatarFallback>
+              <AvatarFallback className="text-muted-foreground text-base">{fallbackName}</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
 
           <DropdownMenuContent>
             <DropdownMenuGroup>
-              <DropdownMenuLabel className="text-muted-foreground text-sm font-mono text-nowrap">
-                Maxwell
+              <DropdownMenuLabel className="line-clamp-1 text-muted-foreground text-sm font-mono text-nowrap">
+                {username?.split(' ').at(0)}
               </DropdownMenuLabel>
               <DropdownMenuSeparator/>
               <DropdownMenuItem>
-                <Button className="p-0 cursor-pointer bg-transparent text-muted-foreground text-sm font-mono hover:bg-transparent">
-                  Update Photo
-                </Button>
+                <div className="p-0 cursor-pointer bg-transparent text-muted-foreground text-sm font-mono hover:bg-transparent">
+                  <Label htmlFor="profile" className="hover:cursor-pointer">Update Photo</Label>
+                  <Input 
+                    id="profile"
+                    type="file"
+                    hidden
+                    accept="image/"
+                    onChange={UpdateUserProfileImage}
+                  />
+                </div>
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
