@@ -33,7 +33,7 @@ export default function SignUp() {
   })
 
    // Zod store
-  const setError = myStore((state) => state.setError);
+  const setAuthError = myStore((state) => state.setAuthError);
 
   
   // user signup logic
@@ -46,7 +46,8 @@ export default function SignUp() {
       },
       {
         onError: (ctx)=> {
-          setError(ctx.error.message)
+          console.log(ctx)
+          setAuthError(ctx.error.message)
         },
         onSuccess: () => {
           reset();

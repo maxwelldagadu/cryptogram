@@ -31,7 +31,7 @@ export default function Login() {
   })
 
   // Zod store
-  const setError = myStore((state) => state.setError);
+  const setAuthError = myStore((state) => state.setAuthError);
 
   // User signin logic
   async function UserSignIn(data: z.infer<typeof SignInSchema>){
@@ -46,7 +46,7 @@ export default function Login() {
         },
         onError: (ctx) => {
           console.log(ctx)
-          setError(ctx.error.message)
+          setAuthError(ctx.error.message)
         }
       }
     )
