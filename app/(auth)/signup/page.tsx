@@ -8,22 +8,47 @@ import z from 'zod';
 import { SignUpSchema } from "@/schemas/zodschemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-
+import { authClient } from "@/lib/client";
+import { myStore } from "@/store/zodstore";
+import { Loader } from 'lucide-react';
+import { redirect } from "next/navigation";
 
 
 export default function SignUp() {
 
+  // Zod store
+  const setError = myStore((state) => state.setError);
 
   // Initializing react hook form
-  const {control,handleSubmit} = useForm({
+  const {control,handleSubmit,formState:{isSubmitting},reset} = useForm({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
       email: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      name: ''
     },
     mode: 'onChange'
   })
+
+  // user signup logic
+  async function UserSignUp(data: z.infer<typeof SignUpSchema>){
+
+    await authClient.signUp.email({
+      email: data.email,
+      password: data.password,
+      name: data.name,
+      callbackURL: '/'
+      },
+      {
+        onError: (ctx)=>{
+          setError(ctx.error.message)
+        }
+      }
+    )
+    reset();
+    redirect('/');
+  }
 
   return (
     <div className="w-70 md:w-100 lg:w-120 font-mono text-white font-medium mt-30">
@@ -36,8 +61,28 @@ export default function SignUp() {
         <CardDescription>Create a user account and explore Crypto insights</CardDescription>
           
         <CardContent className="w-full px-0">
-          <form>
+          <form onSubmit={handleSubmit(UserSignUp)}>
             <FieldGroup>
+              <Controller
+                name='name'
+                control={control}
+                render={({field,fieldState}) => (
+                  <Field>
+                    <FieldLabel htmlFor={field.name} className="text-accent-yellow">Name</FieldLabel>
+                    <div className="rounded-3xl w-full">
+                      <Input 
+                        placeholder="Max Philips"
+                        id={field.name}
+                        aria-invalid={fieldState.invalid}
+                        {...field}
+                        className="appInput rounded-3xl"
+                      />
+                    </div>
+                    {fieldState.error && <FieldError className="text-nowrap" errors={[fieldState.error]}/>}
+                  </Field>
+                )}
+              />
+
               <Controller
                 name='email'
                 control={control}
@@ -93,8 +138,13 @@ export default function SignUp() {
                   </Field>
                 )}
               />
-              <Button className="btn h-7.5 md:h-8 lg:h-10">
-                SignUp
+              <Button type="submit" disabled={isSubmitting} className="btn h-7.5 md:h-8 lg:h-10">
+                {isSubmitting ? 
+                  <div className="flex justify-center items-center gap-4">
+                    <Loader className="text-base animate-spin"/> 
+                    <span className="text-accent-yellow"> Signing you up...</span>
+                  </div> : 
+                  "SignUp"}
               </Button>
             </FieldGroup>
           </form>
