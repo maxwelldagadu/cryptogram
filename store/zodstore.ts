@@ -1,11 +1,15 @@
 import {create} from 'zustand';
 
 interface store {
-  error: string,
+  error: string  | null,
   setError: (errorData: string) => void
+  currentUserSession: string | null,
+  setCurrentUserSession: (sesssionID: string | null) => void
 }
 
 export const myStore = create<store>((set) => ({
-  error: '',
-  setError: (errorData: string) => set({error: errorData})
+  error: null,
+  currentUserSession: null,
+  setError: (errorData: string) => set({error: errorData}),
+  setCurrentUserSession: (sesssionID: string | null) => set({currentUserSession: sesssionID})
   }));

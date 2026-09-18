@@ -16,7 +16,6 @@ import { useRouter } from "next/navigation";
 
 
 export default function SignUp() {
-
   
   // Router for navigation
   const router = useRouter();

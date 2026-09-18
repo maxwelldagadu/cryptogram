@@ -1,7 +1,9 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-
+import { authClient } from "@/lib/client";
+import { useRouter } from "next/navigation";
+import { myStore } from "@/store/zodstore";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,17 +14,28 @@ import {
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 
-import {
-  Avatar,
-  AvatarBadge,
-  AvatarFallback,
-  AvatarGroup,
-  AvatarImage,
-} from "@/components/ui/avatar";
-
-
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function UserProfile() {
+
+  // Router for navigation
+  const router = useRouter();
+
+  // Getting the currentUserSession setter form store
+  const setCurrentUserSession = myStore(state => state.setCurrentUserSession);
+
+  // Logout functionality
+  async function UserLogout(){
+    await authClient.signOut({
+      fetchOptions:{
+        onSuccess: () => {
+          setCurrentUserSession(null);
+          router.replace('/');
+        }
+      }
+    });
+  }
+
   return (
     <div  className="w-100 lg:w-200 flex justify-end items-center rounded-4xl">
       <div className="flex justify-end items-center gap-2 w-full font-mono font-medium">
@@ -52,7 +65,7 @@ export default function UserProfile() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Button className="btn h-full">
+        <Button onClick={UserLogout} className="btn h-full">
           LogOut
         </Button>
       </div>
