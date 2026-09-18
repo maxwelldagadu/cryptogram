@@ -9,12 +9,19 @@ import z from 'zod';
 import { SignInSchema } from "@/schemas/zodschemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
+import { Loader } from 'lucide-react';
+import { authClient } from "@/lib/client";
+import { useRouter } from "next/navigation";
+import { myStore } from "@/store/zodstore";
 
 
 export default function Login() {
 
+  // Router for navigation
+  const router = useRouter();
+
   // Initializing react hook form
-  const {control,handleSubmit} = useForm({
+  const {control,handleSubmit,formState:{isSubmitting},reset} = useForm({
     resolver: zodResolver(SignInSchema),
     defaultValues: {
       email: '',
@@ -22,6 +29,28 @@ export default function Login() {
     },
     mode: 'onChange'
   })
+
+  // Zod store
+  const setError = myStore((state) => state.setError);
+
+  // User signin logic
+  async function UserSignIn(data: z.infer<typeof SignInSchema>){
+    await authClient.signIn.email({
+        email: data.email,
+        password: data.password,
+      },
+      {
+        onSuccess: () => {
+          reset();
+          router.replace('/');
+        },
+        onError: (ctx) => {
+          console.log(ctx)
+          setError(ctx.error.message)
+        }
+      }
+    )
+  }
 
   return (
     <div className="w-70 md:w-100 lg:w-120 font-mono text-white font-medium mt-30">
@@ -33,7 +62,7 @@ export default function Login() {
         <CardDescription>Enter your email below to login to your account</CardDescription>
           
         <CardContent className="w-full px-0">
-          <form>
+          <form onSubmit={handleSubmit(UserSignIn)}>
             <FieldGroup>
               <Controller
                 name='email'
@@ -73,8 +102,13 @@ export default function Login() {
                 )}
               />
 
-              <Button className="btn h-7.5 md:h-8 lg:h-10">
-                SignIn
+              <Button type="submit" disabled={isSubmitting} className="btn h-7.5 md:h-8 lg:h-10">
+                 {isSubmitting ? 
+                  <div className="flex justify-center items-center gap-4">
+                    <Loader className="text-base animate-spin text-white"/> 
+                    <span className="text-accent-yellow"> Signing you in...</span>
+                  </div> : 
+                  "SignIn"}
               </Button>
             </FieldGroup>
           </form>

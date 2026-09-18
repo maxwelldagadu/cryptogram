@@ -1,4 +1,5 @@
 'use client';
+
 import {Card,CardContent,CardDescription,CardHeader,} from "@/components/ui/card";
 import {Field,FieldError,FieldGroup,FieldLabel,} from "@/components/ui/field"
 import { Input } from "@/components/ui/input";
@@ -11,14 +12,15 @@ import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/client";
 import { myStore } from "@/store/zodstore";
 import { Loader } from 'lucide-react';
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 
 export default function SignUp() {
 
-  // Zod store
-  const setError = myStore((state) => state.setError);
-
+  
+  // Router for navigation
+  const router = useRouter();
+  
   // Initializing react hook form
   const {control,handleSubmit,formState:{isSubmitting},reset} = useForm({
     resolver: zodResolver(SignUpSchema),
@@ -31,6 +33,10 @@ export default function SignUp() {
     mode: 'onChange'
   })
 
+   // Zod store
+  const setError = myStore((state) => state.setError);
+
+  
   // user signup logic
   async function UserSignUp(data: z.infer<typeof SignUpSchema>){
 
@@ -38,16 +44,17 @@ export default function SignUp() {
       email: data.email,
       password: data.password,
       name: data.name,
-      callbackURL: '/'
       },
       {
-        onError: (ctx)=>{
+        onError: (ctx)=> {
           setError(ctx.error.message)
+        },
+        onSuccess: () => {
+          reset();
+          router.replace('/');
         }
       }
     )
-    reset();
-    redirect('/');
   }
 
   return (
@@ -141,7 +148,7 @@ export default function SignUp() {
               <Button type="submit" disabled={isSubmitting} className="btn h-7.5 md:h-8 lg:h-10">
                 {isSubmitting ? 
                   <div className="flex justify-center items-center gap-4">
-                    <Loader className="text-base animate-spin"/> 
+                    <Loader className="text-base animate-spin text-white"/> 
                     <span className="text-accent-yellow"> Signing you up...</span>
                   </div> : 
                   "SignUp"}
