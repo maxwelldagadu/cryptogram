@@ -2,12 +2,12 @@
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { UpdateUserProfileImage } from "@/lib/update-profile";
+import { UpdateUserProfileBlob } from "@/lib/update-profile";
 import Image from "next/image";
 import { useGetCurrentUser } from "@/custom-hooks/getCurrentUser";
 import ProfileAvatar from '@/resources/avatar.jpg';
 import { myStore } from "@/store/zodstore";
-
+import { Button } from "@/components/ui/button";
 
 export default function UpdateUserProfile(){
   // Get's current user 
@@ -31,16 +31,24 @@ export default function UpdateUserProfile(){
       </div>
       <span>{username}</span>
       <p>Proceed to update your user profile photo</p>
-      <Label htmlFor="profile" className="btn text-center hover:cursor-pointer">
-        Update Photo
-      </Label>
-      <Input 
-        id="profile"
-        type="file"
-        hidden
-        accept="image/*"
-        onChange={UpdateUserProfileImage}
-      />
+      {
+        blob ? 
+        <Button className="btn text-center hover:cursor-pointer">
+          Update Profile
+        </Button> :
+        <>
+          <Label htmlFor="profile" className="btn text-center hover:cursor-pointer">
+            Select Photo
+          </Label>
+          <Input 
+            id="profile"
+            type="file"
+            hidden
+            accept="image/*"
+            onChange={UpdateUserProfileBlob}
+          />
+        </>
+      }
     </div>
   )
 }
