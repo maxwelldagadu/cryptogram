@@ -1,39 +1,50 @@
-'use client'
+'use server';
 
-import React from "react";
-import { authClient } from "./client";
-import { myStore } from "@/store/zodstore";
-import { supabase } from "@/supabase/supabase-client";
+import { auth } from '@/lib/auth';
+import { supabaseAdmin } from '@/supabase/supabase-admin';
+import { headers } from 'next/headers';
 
-let tempBlobImage;
-
-// Passing the image blob to the UI
-
-export function UpdateUserProfileBlob(e: React.ChangeEvent<HTMLInputElement>){
-  const file = e.target.files;
-
-  if(!file) return;
-  //  console.log(file)
-  const tempBlobImage = URL.createObjectURL(file[0]);
-
-  // Blob image setter
-  myStore.getState().setBlobImage(tempBlobImage);
-
-  // main profile image setter
-  myStore.getState().setProfileImage(file[0]);
-}
 
 
 // Updating the user profile
 
-export async function UpdateUserProfileImage(){
-  const useremail = await authClient.getSession();
+export async function UpdateUserProfileImage(formData: FormData) {
+  const profileImage = formData.get('profileImage');
 
-  // Uploading profile photo into avatar bucket
-  await supabase.storage.from('avatar').upload(`${useremail.data?.user.email}/profile_photo`,profileImage);
+  if (!(profileImage instanceof File)) {
+    return { success: false, error: 'No image' };
+  }
 
-  // Update the user profile image
-  const {data} = await supabase.storage.from('avatar').download(`${useremail.data?.user.email}/profile_photo`);
+  // Get current user
+  const currentUser = await auth.api.getSession({ headers: await headers() });
+  const userId = currentUser?.user.id;
 
-  await authClient.updateUser
+  if (!userId) {
+    return { success: false, error: 'No user found' };
+  }
+
+  // uploading image to avatar bucket
+  const { data, error } = await supabaseAdmin.storage
+    .from('avatar')
+    .upload(`${userId}/avatar.png`, profileImage, { upsert: true });
+
+  if (error || !data) {
+    console.error('Supabase avatar upload failed:', error);
+    return { success: false, error: error?.message ?? 'Cannot be uploaded' };
+  }
+
+  // Gets the image public URL
+  const profilePhotoURL = supabaseAdmin.storage.from('avatar').getPublicUrl(data.path);
+
+  // Update the user image in DB
+  const updateResult = await auth.api.updateUser({
+    headers: await headers(),
+    body: { image: profilePhotoURL.data.publicUrl },
+  });
+
+  if (!updateResult.status) {
+    return { success: false, error: 'Profile update failed' };
+  }
+
+  return { success: true };
 }

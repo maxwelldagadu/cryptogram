@@ -3,17 +3,20 @@ import { authClient } from "@/lib/client";
 
 // Custom hook to get the current user
 export function useGetCurrentUser(){
-  const [username, setUsername] = useState<string | undefined>(undefined);
+  const [user, setUser] = useState<Record<string,string|null> | null>(null);
 
   useEffect(() => {
     // Get login user;
     const userDetail =  async() => {
       const getUser = await authClient.getSession();
-      setUsername(getUser.data?.user.name);
+      setUser({
+              userImage:getUser.data?.user.image ?? null,
+              userName:getUser.data?.user.name ?? null
+            });
     }
 
     userDetail();
   },[]);
 
-  return {username};
+  return user;
 }

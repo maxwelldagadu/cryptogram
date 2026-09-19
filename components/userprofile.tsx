@@ -17,11 +17,29 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { useGetCurrentUser } from "@/custom-hooks/getCurrentUser";
+import { useState,useEffect } from "react";
+
 
 export default function UserProfile() {
 
-  const {username} = useGetCurrentUser();
+  const [userImage, setUserImage] = useState<string | undefined>(undefined);
 
+   // Get profile photo
+  useEffect(() => {
+    async function getImage(){
+      const user = (await authClient.getSession()).data?.user.image;
+      setUserImage(user ?? undefined)
+    }
+
+    getImage();
+  },[])
+
+
+  // Get username 
+  const currentUser = useGetCurrentUser();
+  const username = currentUser?.userName;
+
+  
   // Router for navigation
   const router = useRouter();
 
@@ -29,6 +47,9 @@ export default function UserProfile() {
   const setCurrentUserSession = myStore(state => state.setCurrentUserSession);
 
   const fallbackName = username?.slice(0,2).toUpperCase();
+
+   // Default placeholder image
+  const placeholderImage = "https://drive.google.com/file/d/1gWR3-MeYeWJ5mmZpsAsL4kE6Pte4sVPC/view?usp=drive_link";
 
   // Logout functionality
   async function UserLogout(){
@@ -41,7 +62,7 @@ export default function UserProfile() {
       }
     });
   }
-
+  
   return (
     <div  className="w-100 lg:w-200 flex justify-end items-center rounded-4xl">
       <div className="flex justify-end items-center gap-2 w-full font-mono font-medium">
@@ -51,7 +72,7 @@ export default function UserProfile() {
             <Button className="rounded-full cursor-pointer h-full bg-transparent hover:bg-transparent"/>}
           >
             <Avatar>
-              <AvatarImage className="object-cover" src="https://i.pravatar.cc/48?pl" alt="user-profile-image"/>
+              <AvatarImage className="object-cover" src={userImage || placeholderImage} alt="user-profile-image"/>
               <AvatarFallback className="text-muted-foreground text-base">{fallbackName}</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
