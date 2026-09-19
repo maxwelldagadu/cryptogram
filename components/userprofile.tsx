@@ -15,24 +15,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { UpdateUserProfileImage } from "@/lib/update-profile";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useGetCurrentUser } from "@/custom-hooks/getCurrentUser";
 
 export default function UserProfile() {
 
-  const [username, setUsername] = useState<string | undefined>(undefined);
-
-  useEffect(() => {
-    // Get login user;
-    const userDetail =  async() => {
-      const getUser = await authClient.getSession();
-      setUsername(getUser.data?.user.name);
-    }
-
-    userDetail();
-  },[]);
+  const {username} = useGetCurrentUser();
 
   // Router for navigation
   const router = useRouter();
@@ -75,16 +63,9 @@ export default function UserProfile() {
               </DropdownMenuLabel>
               <DropdownMenuSeparator/>
               <DropdownMenuItem>
-                <div className="p-0 cursor-pointer bg-transparent text-muted-foreground text-sm font-mono hover:bg-transparent">
-                  <Label htmlFor="profile" className="hover:cursor-pointer">Update Photo</Label>
-                  <Input 
-                    id="profile"
-                    type="file"
-                    hidden
-                    accept="image/"
-                    onChange={UpdateUserProfileImage}
-                  />
-                </div>
+                <Link href="/update-profile" className="text-nowrap p-0 cursor-pointer bg-transparent text-muted-foreground text-sm font-mono hover:bg-transparent">
+                  Update Profile
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
