@@ -11,7 +11,7 @@ export default function SearchInputField({className}: {className:string}) {
       <button className="hover:cursor-pointer">
         <Search  className="text-custom-gray ml-1 size-4 sm:size-5"/>
       </button>
-      <Input className="appInput" placeholder="Search"/>
+      <Input className="appInput" placeholder="BTCUSDT,ETHUSDT"/>
     </div>
   )
 }
