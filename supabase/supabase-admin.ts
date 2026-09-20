@@ -7,6 +7,7 @@ if (!supabaseUrl || !serviceRoleKey) {
   throw new Error('Missing Supabase server environment variables');
 }
 
+// Creates connection to supabase DB. Wecna upload and download files
 export const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey, {
   auth: {
     autoRefreshToken: false,

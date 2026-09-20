@@ -17,27 +17,14 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { useGetCurrentUser } from "@/custom-hooks/getCurrentUser";
-import { useState,useEffect } from "react";
 
 
 export default function UserProfile() {
 
-  const [userImage, setUserImage] = useState<string | undefined>(undefined);
-
-   // Get profile photo
-  useEffect(() => {
-    async function getImage(){
-      const user = (await authClient.getSession()).data?.user.image;
-      setUserImage(user ?? undefined)
-    }
-
-    getImage();
-  },[])
-
-
-  // Get username 
+  // Get username and profile Image
   const currentUser = useGetCurrentUser();
-  const username = currentUser?.userName;
+  const userName = currentUser?.userName;
+  const userImage = currentUser?.userImage;
 
   
   // Router for navigation
@@ -46,7 +33,7 @@ export default function UserProfile() {
   // Getting the currentUserSession setter form store
   const setCurrentUserSession = myStore(state => state.setCurrentUserSession);
 
-  const fallbackName = username?.slice(0,2).toUpperCase();
+  const fallbackName = userName?.slice(0,2).toUpperCase();
 
    // Default placeholder image
   const placeholderImage = "https://drive.google.com/file/d/1gWR3-MeYeWJ5mmZpsAsL4kE6Pte4sVPC/view?usp=drive_link";
@@ -80,7 +67,7 @@ export default function UserProfile() {
           <DropdownMenuContent>
             <DropdownMenuGroup>
               <DropdownMenuLabel className="line-clamp-1 text-muted-foreground text-sm font-mono text-nowrap">
-                {username?.split(' ').at(0)}
+                {userName?.split(' ').at(0)}
               </DropdownMenuLabel>
               <DropdownMenuSeparator/>
               <DropdownMenuItem>
