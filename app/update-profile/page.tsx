@@ -25,12 +25,12 @@ export default function UpdateUserProfile(){
   const userImage = currentUser?.userImage;
   const userName = currentUser?.userName;
 
-  // Access the blob image from the store
+  // Access the blob image, error setter and profile image from the store
   const blob = myStore(state => state.blobImage);
   const profileImage = myStore(state => state.profileImage);
   const setAuthError = myStore(state => state.setAuthError);
 
-  // Blb setter
+  // Blob setter
   const setBlobImage = myStore(state => state.setBlobImage);
 
   // Upadting the profile image

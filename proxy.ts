@@ -6,14 +6,15 @@ import { headers } from "next/headers";
 
 
 export async function proxy(request: NextRequest) {
+  // Checks if user if authenticated
+  const userSession = await auth.api.getSession({headers: await headers()});
 
-  const authUser = await auth.api.getSession({headers: await headers()});
-
-  if(!authUser){
-    NextResponse.redirect(new URL('/signup',request.url));
+  if(!userSession){
+    return NextResponse.redirect(new URL('/signin',request.url));
   }
 
-  NextResponse.next();
+  // Proceed the request if user is authenticated
+  return NextResponse.next();
 }
 
 export const config = {
