@@ -56,7 +56,10 @@
   --color-custom-gray: #ECEAE7;
   --color-accent-yellow: #F0D85A;
   --color-light-dark: #646464;
-  --color-primary-gray: #A3A3A3
+  --color-primary-gray: #A3A3A3;
+  --color-background-gray: #1A1A1A;
+  --color-bearish: #F46D22;
+  --color-bullish: #1DD6B4
 }
 
 /* @layer base{
