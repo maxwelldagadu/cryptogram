@@ -80,7 +80,7 @@ export default function UserProfile() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Button className="sm:hidden p-0 cursor-pointer bg-transparent text-muted-foreground text-sm font-mono hover:bg-transparent">
+                <Button onClick={UserLogout} className="sm:hidden p-0 cursor-pointer bg-transparent text-muted-foreground text-sm font-mono hover:bg-transparent">
                    <LogOut/> Logout
                 </Button>
               </DropdownMenuItem>
