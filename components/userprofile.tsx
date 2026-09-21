@@ -17,7 +17,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { useGetCurrentUser } from "@/custom-hooks/getCurrentUser";
-
+import { LogOut } from 'lucide-react';
 
 export default function UserProfile() {
 
@@ -52,7 +52,11 @@ export default function UserProfile() {
   
   return (
     <div  className="w-100 lg:w-200 flex justify-end items-center rounded-4xl">
-      <div className="flex justify-end items-center gap-2 w-full font-mono font-medium">
+       <Link href="/most-popular" className="sm:hidden text-nowrap btn">
+          Most Popular
+        </Link>
+
+      <div className="flex justify-end items-center gap-2 w-15 font-mono font-medium">
         <DropdownMenu>
           <DropdownMenuTrigger 
             render={
@@ -75,11 +79,16 @@ export default function UserProfile() {
                   Update Profile
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Button className="sm:hidden p-0 cursor-pointer bg-transparent text-muted-foreground text-sm font-mono hover:bg-transparent">
+                   <LogOut/> Logout
+                </Button>
+              </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Button onClick={UserLogout} className="btn h-full">
+        <Button onClick={UserLogout} className="btn h-full hidden sm:block">
           LogOut
         </Button>
       </div>
