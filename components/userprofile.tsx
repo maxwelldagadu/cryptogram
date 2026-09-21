@@ -20,6 +20,7 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar";
 
+import { LogOut } from 'lucide-react';
 
 
 export default function UserProfile() {
@@ -48,12 +49,17 @@ export default function UserProfile() {
                   Update Photo
                 </Button>
               </DropdownMenuItem>
+              <DropdownMenuItem>
+               <Button className="md:hidden p-0 cursor-pointer bg-transparent text-muted-foreground text-sm font-mono hover:bg-transparent">
+                   <LogOut/>LogOut
+                </Button>
+              </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
 
         <Button className="btn h-full">
-          LogOut
+         LogOut
         </Button>
       </div>
     </div>
