@@ -6,9 +6,9 @@ export default function TimeframeTrend({timeframe,trend}: {timeframe:string,tren
   const marketTrend = Number(trend);
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-base font-medium text-primary-gray font-mono">{timeframe}</span>
-      <div className="text-white text-base font-mono flex justify-between items-center w-full">
-        <span>
+      <span className="text-xs font-medium text-primary-gray font-mono">{timeframe}</span>
+      <div className="text-white font-semibold text-base font-mono flex justify-between items-center w-full">
+        <span className="text-xs">
           {marketTrend < 0 ? `${marketTrend}%` : `+${marketTrend}%`}
         </span>
         <span>

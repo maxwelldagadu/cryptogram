@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
       },
       {
         hostname: "hclqaacbuwpekuiruzzl.supabase.co"
+      },
+      {
+        hostname: "cryptoicons.org"
       }
     ],
   },
