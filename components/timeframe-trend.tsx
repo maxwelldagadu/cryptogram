@@ -5,7 +5,7 @@ import { ArrowDownLeft } from 'lucide-react';
 export default function TimeframeTrend({timeframe,trend}: {timeframe:string,trend:string}) {
   const marketTrend = Number(trend);
   return (
-    <div className="flex flex-col gap-2">
+    <div className="h-full flex flex-col gap-2 md:gap-3 justify-stretch">
       <span className="text-[9px] md:text-[12px] font-medium text-primary-gray font-mono">{timeframe}</span>
       <div className="text-white text-[9px] font-medium md:text-base font-mono flex justify-between items-center w-full">
         <span className="text-xs">
