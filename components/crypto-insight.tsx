@@ -1,11 +1,29 @@
+'use client';
+
 import TimeframeTrend from "./timeframe-trend";
 import Trending from "./trending";
 import { Separator } from "./ui/separator";
 import btc from '@/resources/logos/bitcoin.svg'
 import TrendVisual from '@/resources/svgs/bitcoin.svg';
+import { useEffect } from "react";
+import {getTrendingData} from '@/lib/getTrendingData';
+
+
 
 
 export default function CryptoInsight() {
+  
+  // Getting the trending coin data
+  useEffect(() => {
+  
+    async function trendingData(){
+      const [bitcoin] = await Promise.all([getTrendingData('btcusdt')]);
+    }
+
+    trendingData();
+  },[]);
+
+
   return (
     <div className="md:p-4 w-full flex flex-col justify-between items-start gap-10">
       <div className="w-full flex justify-between items-center gap-3 md:gap-20 p-2">
