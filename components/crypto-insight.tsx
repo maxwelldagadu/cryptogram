@@ -12,9 +12,11 @@ import BtcVisual from '@/resources/svgs/bitcoin.svg';
 import ItcVisual from '@/resources/svgs/litecoin.png';
 import EthVisual from '@/resources/svgs/etherum.png';
 import SolVisual from '@/resources/svgs/solana.svg';
-import { Suspense, useEffect,useState } from "react";
+import { useEffect,useState } from "react";
 import { ws } from '@/lib/getTrendingData';
 import TrendSuspense from '@/suspense/trendSuspense';
+import type { StaticImport } from 'next/dist/shared/lib/get-img-props';
+import Chart from '@/components/chart';
 
 export default function CryptoInsight() {
   
@@ -78,18 +80,19 @@ export default function CryptoInsight() {
           {data?.map(data => (
             <Trending 
               key={String(data?.coin)} 
-              coin={data?.coin} 
-              shortname={data?.shortName} 
-              trend={data?.trend} 
-              logo={data?.logo} 
-              trendVisual={data?.trendVisual} 
-              price={data?.price}
+              coin={String(data?.coin ?? '')}
+              shortname={String(data?.shortName ?? '')} 
+              trend={Number(data?.trend)}
+              logo={data?.logo as StaticImport} 
+              trendVisual={data?.trendVisual as StaticImport} 
+              price={Number(data?.price)}
             />
           ))}
         </div>
         ) : 
         <TrendSuspense/>
       }
+        <Chart />
     </div>
   )
 }
