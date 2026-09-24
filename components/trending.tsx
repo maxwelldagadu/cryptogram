@@ -26,7 +26,7 @@ export default function Trending({logo,coin,shortname,trend,price,trendVisual}) 
         <div className="h-full w-full flex flex-col justify-between items-start font-mono gap-2">
           <span className="text-[11px] md:text-sm">{`$${price.toLocaleString('en-US')}`}</span>
           <span className={`text-[11px] md:text-xs ${trend < 0 ? 'text-bearish' : 'text-bullish'}`}>
-            {trend < 0 ? `-${trend}%` : `+${trend}%`}
+            {trend < 0 ? `${trend}%` : `+${trend}%`}
           </span>
         </div>
         <div className="relative h-12 w-full">

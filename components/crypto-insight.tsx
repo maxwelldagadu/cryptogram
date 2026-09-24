@@ -3,21 +3,43 @@
 import TimeframeTrend from "./timeframe-trend";
 import Trending from "./trending";
 import { Separator } from "./ui/separator";
-import btc from '@/resources/logos/bitcoin.svg'
-import TrendVisual from '@/resources/svgs/bitcoin.svg';
-import { useEffect } from "react";
+import Btc from '@/resources/logos/bitcoin.svg';
+import Lite from '@/resources/logos/litecoin.svg';
+import Ether from '@/resources/logos/etherum.svg';
+import Sol from '@/resources/logos/solana.svg';
 import {getTrendingData} from '@/lib/getTrendingData';
-
-
+import BtcVisual from '@/resources/svgs/bitcoin.svg';
+import ItcVisual from '@/resources/svgs/litecoin.png';
+import EthVisual from '@/resources/svgs/etherum.png';
+import SolVisual from '@/resources/svgs/solana.svg';
+import { useEffect,useState } from "react";
 
 
 export default function CryptoInsight() {
   
+  const [data,setData] = useState<Record<string, unknown>[]>([]);
+
   // Getting the trending coin data
   useEffect(() => {
   
     async function trendingData(){
-      const [bitcoin] = await Promise.all([getTrendingData('btcusdt')]);
+      const [bitcoin,litecoin,etherum,solana] = await Promise.all(
+        [
+          getTrendingData('btcusdt'),
+          getTrendingData('ltcusdt'),
+          getTrendingData('ethusdt'),
+          getTrendingData('solusdt'),
+        ]
+      );
+      
+      setData(
+        [
+          { ...(bitcoin as Record<string, unknown>),logo:Btc,coin:'Bitcoin',shortName:'BTC',trendVisual:BtcVisual },
+          { ...(litecoin as Record<string, unknown>),logo:Lite,coin:'Litecoin',shortName:'ITC',trendVisual:ItcVisual },
+          { ...(etherum as Record<string, unknown>),logo:Ether,coin:'Etherum',shortName:'ETH',trendVisual:EthVisual },
+          { ...(solana as Record<string, unknown>),logo:Sol,coin:'Solana', shortName:'SOL',trendVisual:SolVisual }
+        ]
+      );
     }
 
     trendingData();
@@ -44,11 +66,18 @@ export default function CryptoInsight() {
       </div>
     
       <div className="w-full p-2 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-center gap-5">
-        <Trending coin="Bitcoin" shortname="BTC" trend={2.3} logo={btc} trendVisual={TrendVisual} price={456555}/>
-        <Trending coin="Bitcoin" shortname="BTC" trend={2.3} logo={btc} trendVisual={TrendVisual} price={456555}/>
-        <Trending coin="Bitcoin" shortname="BTC" trend={2.3} logo={btc} trendVisual={TrendVisual} price={456555}/>
-        <Trending coin="Bitcoin" shortname="BTC" trend={2.3} logo={btc} trendVisual={TrendVisual} price={456555}/>
-      </div>
+        {data?.map(data => (
+          <Trending 
+            key={String(data.coin)} 
+            coin={data.coin} 
+            shortname={data.shortName} 
+            trend={data.trend} 
+            logo={data.logo} 
+            trendVisual={data.trendVisual} 
+            price={data.price}
+          />
+        ))}
+      </div> 
     </div>
   )
 }
