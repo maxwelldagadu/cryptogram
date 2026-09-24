@@ -1,9 +1,19 @@
 import Image from "next/image";
 import { MoveUpRight } from 'lucide-react';
 import { MoveDownLeft } from 'lucide-react';
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
 
-export default function Trending({logo,coin,shortname,trend,price,trendVisual}) {
+interface TrendData{
+  logo: StaticImport;
+  coin: string,
+  shortname: string,
+  trend: number,
+  price: number,
+  trendVisual: StaticImport
+}
+
+export default function Trending({logo,coin,shortname,trend,price,trendVisual}: TrendData) {
   // Converts the trend nto a number
   const marketTrend = Number(trend);
 
