@@ -18,6 +18,9 @@ import TrendSuspense from '@/suspense/trendSuspense';
 import type { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Chart from '@/components/chart';
 import { myStore } from "@/store/zodstore";
+import { formatNumber } from "@/lib/number-formatter";
+
+
 
 export default function CryptoInsight() {
   
@@ -26,8 +29,11 @@ export default function CryptoInsight() {
 
   // Get the current crypto
   const cryptoCoin = myStore(state => state.marketData)['BTCUSDT'];
+  const getVolume = Math.floor(cryptoCoin?.volume);
+  const volume = formatNumber(getVolume);
+  // Percentage timrframe change
   const trend = cryptoCoin?.percentageTrend;
-  console.log('DATA:',cryptoCoin);
+  
 
   // Load the four market cards once, then close their shared websocket on unmount.
   useEffect(() => {
@@ -68,9 +74,8 @@ export default function CryptoInsight() {
           <span className="text-nowrap text-[7px] md:text-[12px] font-medium text-primary-gray font-mono">24HR VOLUME</span>
           <span className="text-base font-medium text-primary-gray font-mono">
             <span className="text-white md:text-3xl lg:text-4xl text-semibold">
-              {`$${cryptoCoin?.volume.toLocaleString('en-US')}`}
+              {`$${volume}`}
             </span>
-            .00
           </span>
         </div>
         <div className="flex gap-2 h-full  justify-between items-start w-1.5/3">
