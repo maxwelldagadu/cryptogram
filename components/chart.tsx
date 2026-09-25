@@ -20,7 +20,7 @@ import { myStore } from '@/store/zodstore';
 import { Loader } from 'lucide-react';
 
 
-const intervals: ChartInterval[] = ['1m', '2m', '5m', '15m', '30m', '1h'];
+const intervals: ChartInterval[] = ['1m', '5m', '15m', '30m', '1h'];
 
 function toChartCandle(candle: MarketCandle): CandlestickData<Time> {
 	// Lightweight Charts needs the time and OHLC values in its candlestick data shape.
@@ -123,7 +123,7 @@ export default function Chart() {
 	}, [candles]);
 
 	return (
-		<section className="w-full h-full rounded-2xl bg-black p-3 md:p-5" aria-label={`${'BTC/USDT'} price chart`}>
+		<section className="w-full min-w-0 h-full overflow-hidden rounded-2xl bg-black p-3 md:p-5" aria-label={`${'BTC/USDT'} price chart`}>
 			<div className="mb-4 flex flex-wrap items-center justify-between gap-3">
 				<div>
 					<h2 className="font-mono text-sm font-medium text-white md:text-base">{'BTC/USDT'}</h2>
@@ -145,7 +145,7 @@ export default function Chart() {
 					))}
 				</div>
 			</div>
-			<div ref={containerRef} className="h-[320px] w-full md:h-[430px]" />
+			<div ref={containerRef} className="h-80 w-full min-w-0" />
 			{(isLoading || error) && (
 				<div className="mt-2 font-mono text-xs text-primary-gray">
           { error ?? 

@@ -1,7 +1,7 @@
 
 
 
-export type ChartInterval = '1m' | '2m' | '5m' | '15m' | '30m' | '1h';
+export type ChartInterval = '1m'  | '5m' | '15m' | '30m' | '1h';
 
 export interface MarketCandle {
   time: number;

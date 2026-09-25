@@ -10,9 +10,9 @@ export const metadata: Metadata = {
 
 export default function Home(){
   return (
-    <div className="flex justify-center md:justify-between items-center gap-0 md:20">
+    <div className="flex min-w-0 justify-center md:justify-between items-center gap-0 md:20">
       <p className="w-80 hidden md:block">Home hfhhhhh</p>
-      <div className="bg-background-gray flex-1">
+      <div className="min-w-0 flex-1 bg-background-gray">
         <CryptoInsight/>
       </div>
     </div>
