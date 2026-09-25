@@ -10,6 +10,8 @@ interface Store {
   setCurrentUserSession: (sesssionID: string | null) => void,
   setBlobImage: (blob: string) => void,
   setProfileImage: (profileImage: File | null) => void,
+  activeSymbol: string,
+  setActiveSymbol: (symbol: string) => void,
   marketData: Record<string, MarketData>,
   setMarketData: (symbol: string, marketData: MarketData) => void,
   updateCandle: (symbol: string, candle: MarketCandle) => void
@@ -20,6 +22,7 @@ export const myStore = create<Store>((set) => ({
   currentUserSession: null,
   blobImage: '',
   profileImage: null,
+  activeSymbol: 'BTCUSDT',
   marketData: {},
 
   setAuthError: (errorData: string | null) => set({authError: errorData}),
@@ -29,6 +32,8 @@ export const myStore = create<Store>((set) => ({
   setBlobImage: (blob: string) => set({blobImage: blob}),
 
   setProfileImage: (profileImage: File | null) => set({profileImage}),
+
+  setActiveSymbol: (symbol) => set({ activeSymbol: symbol }),
 
 	// Store each symbol separately so loading one chart never overwrites another coin's data.
   setMarketData: (symbol, marketData) => set((state) => ({

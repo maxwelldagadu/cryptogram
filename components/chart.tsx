@@ -20,7 +20,7 @@ import { myStore } from '@/store/zodstore';
 import { Loader } from 'lucide-react';
 
 
-const intervals: ChartInterval[] = ['1m', '5m', '15m', '30m', '1h'];
+const intervals: ChartInterval[] = ['1m', '5m', '15m', '30m', '1h']; // Chart time types
 
 function toChartCandle(candle: MarketCandle): CandlestickData<Time> {
 	// Lightweight Charts needs the time and OHLC values in its candlestick data shape.
@@ -42,7 +42,8 @@ export default function Chart() {
 	const [interval, setInterval] = useState<ChartInterval>('1m');
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
-	const marketData = myStore((state) => state.marketData['BTC/USDT']);
+	const symbol = myStore((state) => state.activeSymbol);
+	const marketData = myStore((state) => state.marketData[symbol]);
 	const setMarketData = myStore((state) => state.setMarketData);
 	const updateCandle = myStore((state) => state.updateCandle);
 	const candles = marketData?.candles ?? [];
@@ -90,20 +91,20 @@ export default function Chart() {
 		setIsLoading(true);
 		setError(null);
 
-		fetchMarketData('BTCUSDT', interval)
+		fetchMarketData(symbol, interval)
 			.then((marketData) => {
 				if (cancelled) return;
 				// Seed the series with already closed candles before listening for live updates.
-				setMarketData('BTCUSDT', marketData);
+				setMarketData(symbol, marketData);
 				seriesRef.current?.setData(marketData.candles.map(toChartCandle));
 				chartRef.current?.timeScale().fitContent();
-				closeSocket = subscribeToCandles('BTCUSDT', interval, (candle) => updateCandle('BTCUSDT', candle));
+				closeSocket = subscribeToCandles(symbol, interval, (candle) => updateCandle(symbol, candle));
 				setIsLoading(false);
 			})
 			.catch((error) => {
 				if (!cancelled) {
           console.log(error.message);
-					setError(`Unable to load ${'BTC/USDT'} market data.`);
+					setError(`Unable to load ${symbol} market data.`);
 					setIsLoading(false);
 				}
 			});
@@ -113,7 +114,7 @@ export default function Chart() {
 			cancelled = true;
 			closeSocket();
 		};
-	}, [interval, setMarketData, 'BTCUSDT', updateCandle]);
+	}, [interval, setMarketData, symbol, updateCandle]);
 
 	useEffect(() => {
 		if (candles.length > 0) {
@@ -123,11 +124,11 @@ export default function Chart() {
 	}, [candles]);
 
 	return (
-		<section className="w-full min-w-0 h-full overflow-hidden rounded-2xl bg-black p-3 md:p-5" aria-label={`${'BTC/USDT'} price chart`}>
+		<section className="w-full min-w-0 h-full overflow-hidden rounded-2xl bg-black pt-3 px-1 pb-1 md:p-5" aria-label={`${symbol} price chart`}>
 			<div className="mb-4 flex flex-wrap items-center justify-between gap-3">
 				<div>
-					<h2 className="font-mono text-sm font-medium text-white md:text-base">{'BTC/USDT'}</h2>
-					<p className="font-mono text-[10px] md:text-[12px] text-primary-gray">Live {'BTC/USDT'} market data</p>
+					<h2 className="font-mono text-sm font-medium text-white md:text-base">{symbol}</h2>
+					<p className="font-mono text-[10px] md:text-[12px] text-primary-gray">Live {symbol} market data</p>
 				</div>
 				<div className="flex flex-wrap gap-1" role="group" aria-label="Chart interval">
 					{intervals.map((option) => (
@@ -151,7 +152,7 @@ export default function Chart() {
           { error ?? 
             <div className='flex justify-center items-center gap-3'>
               <Loader className='text-white text-[10px] md:text-base animate-spin'/>
-			          Loading {'BTC/USDT'}...
+				          Loading {symbol}...
             </div>
           }
         </div>

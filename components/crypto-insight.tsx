@@ -32,7 +32,7 @@ export default function CryptoInsight() {
   const cryptoCoin = myStore(state => state.marketData)['BTCUSDT'];
   const getVolume = Math.floor(cryptoCoin?.volume);
   const volume = formatNumber(getVolume);
-  console.log(volume)
+  
   // Percentage timrframe change
   const trend = cryptoCoin?.percentageTrend;
   
@@ -71,12 +71,12 @@ export default function CryptoInsight() {
 
   return (
     <div className="md:p-4 w-full min-w-0 flex flex-col justify-between items-start gap-10">
-      <div className="w-full flex justify-between items-center gap-3 md:gap-20 p-2">
+      <div className="w-full flex justify-between items-center gap-3 md:gap-10 p-2">
         <div className="flex flex-col gap-2 md:gap-3">
           <span className="text-nowrap text-[7px] md:text-[12px] font-medium text-primary-gray font-mono">24HR VOLUME</span>
           <span className="text-base font-medium text-primary-gray font-mono">
            {volume != 'NaN' ?  
-              <span className="text-white md:text-3xl lg:text-4xl text-semibold">
+              <span className="text-white md:text-2xl lg:text-4xl text-semibold">
                 {`$${volume}`}
               </span>
               :
