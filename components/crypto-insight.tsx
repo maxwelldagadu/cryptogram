@@ -19,6 +19,7 @@ import type { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Chart from '@/components/chart';
 import { myStore } from "@/store/zodstore";
 import { formatNumber } from "@/lib/number-formatter";
+import { Skeleton } from "./ui/skeleton";
 
 
 
@@ -31,6 +32,7 @@ export default function CryptoInsight() {
   const cryptoCoin = myStore(state => state.marketData)['BTCUSDT'];
   const getVolume = Math.floor(cryptoCoin?.volume);
   const volume = formatNumber(getVolume);
+  console.log(volume)
   // Percentage timrframe change
   const trend = cryptoCoin?.percentageTrend;
   
@@ -73,9 +75,13 @@ export default function CryptoInsight() {
         <div className="flex flex-col gap-2 md:gap-3">
           <span className="text-nowrap text-[7px] md:text-[12px] font-medium text-primary-gray font-mono">24HR VOLUME</span>
           <span className="text-base font-medium text-primary-gray font-mono">
-            <span className="text-white md:text-3xl lg:text-4xl text-semibold">
-              {`$${volume}`}
-            </span>
+           {volume != 'NaN' ?  
+              <span className="text-white md:text-3xl lg:text-4xl text-semibold">
+                {`$${volume}`}
+              </span>
+              :
+              <Skeleton className="h-3 md:h5 w-full"/>
+            }
           </span>
         </div>
         <div className="flex gap-2 h-full  justify-between items-start w-1.5/3">
