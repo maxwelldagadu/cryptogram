@@ -43,7 +43,12 @@ interface BinanceKline {
 }
 
 const BINANCE_API_URL = 'https://api.binance.com/api/v3/klines';
+const BINANCE_24_HOUR_TICKER_URL = 'https://api.binance.com/api/v3/ticker/24hr';
 const BINANCE_STREAM_URL = 'wss://stream.binance.com:9443/ws';
+
+interface Binance24HourTicker {
+  quoteVolume: string;
+}
 
 function toCandle(kline: BinanceKline): MarketCandle {
   // Convert Binance's positional kline response into the named fields used by the chart and store.
@@ -92,11 +97,25 @@ export async function fetchBinanceCandles(
   });
 }
 
+async function fetchBinance24HourVolume(symbol: string): Promise<number> {
+  // quoteVolume is the total value traded in the quote currency, such as USDT for BTCUSDT.
+  const params = new URLSearchParams({ symbol: symbol.toUpperCase() });
+  const response = await fetch(`${BINANCE_24_HOUR_TICKER_URL}?${params.toString()}`);
+
+  if (!response.ok) {
+    throw new Error(`Binance 24-hour ticker request failed with status ${response.status}`);
+  }
+
+  const ticker = (await response.json()) as Binance24HourTicker;
+  return Number(ticker.quoteVolume);
+}
+
 export async function fetchMarketData(symbol: string, interval: ChartInterval = '1m'): Promise<MarketData> {
-  // Load chart history and daily reference candles together so the initial store update is complete.
-  const [candles, dailyCandles] = await Promise.all([
+  // Load chart history, trend references, and the independent 24-hour volume together.
+  const [candles, dailyCandles, volume] = await Promise.all([
     fetchBinanceCandles(symbol, interval),
     fetchBinanceCandles(symbol, '1d', 31),
+    fetchBinance24HourVolume(symbol),
   ]);
   const currentPrice = candles.at(-1)?.close ?? 0;
   const latestDailyIndex = dailyCandles.length - 1;
@@ -104,7 +123,7 @@ export async function fetchMarketData(symbol: string, interval: ChartInterval = 
   // Keep the chart candles separate from summary values that other dashboard components can consume later.
   return {
     candles,
-    volume: candles.at(-1)?.volume ?? 0,
+    volume,
     percentageTrend: {
       today: getPercentageTrend(currentPrice, dailyCandles.at(-1)?.open ?? currentPrice),
       sevenDays: getPercentageTrend(

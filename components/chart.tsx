@@ -123,7 +123,7 @@ export default function Chart() {
 	}, [candles]);
 
 	return (
-		<section className="w-full rounded-2xl bg-black p-3 md:p-5" aria-label={`${'BTC/USDT'} price chart`}>
+		<section className="w-full h-full rounded-2xl bg-black p-3 md:p-5" aria-label={`${'BTC/USDT'} price chart`}>
 			<div className="mb-4 flex flex-wrap items-center justify-between gap-3">
 				<div>
 					<h2 className="font-mono text-sm font-medium text-white md:text-base">{'BTC/USDT'}</h2>

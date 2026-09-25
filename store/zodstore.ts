@@ -46,13 +46,13 @@ export const myStore = create<Store>((set) => ({
 			// The websocket repeatedly updates the same open candle until the interval closes.
       return { marketData: {
         ...state.marketData,
-        [symbol]: { ...currentMarketData, candles: [...currentMarketData.candles.slice(0, -1), candle], volume: candle.volume },
+        [symbol]: { ...currentMarketData, candles: [...currentMarketData.candles.slice(0, -1), candle] },
       } };
     }
 		// A new timestamp means the previous candle closed, so preserve it and add the new one.
     return { marketData: {
       ...state.marketData,
-      [symbol]: { ...currentMarketData, candles: [...currentMarketData.candles, candle], volume: candle.volume },
+      [symbol]: { ...currentMarketData, candles: [...currentMarketData.candles, candle] },
     } };
   })
   }));
