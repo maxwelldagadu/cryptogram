@@ -24,6 +24,12 @@ export interface MarketTrends {
   thirtyDays: PercentageTrend;
 }
 
+export interface MarketData {
+  candles: MarketCandle[];
+  volume: number;
+  percentageTrend: MarketTrends;
+}
+
 interface BinanceKline {
   0: number;
   1: string;
@@ -40,6 +46,7 @@ const BINANCE_API_URL = 'https://api.binance.com/api/v3/klines';
 const BINANCE_STREAM_URL = 'wss://stream.binance.com:9443/ws';
 
 function toCandle(kline: BinanceKline): MarketCandle {
+  // Convert Binance's positional kline response into the named fields used by the chart and store.
   return {
     time: Math.floor(kline[0] / 1000),
     open: Number(kline[1]),
@@ -51,6 +58,7 @@ function toCandle(kline: BinanceKline): MarketCandle {
 }
 
 function getPercentageTrend(currentPrice: number, referencePrice: number): PercentageTrend {
+  // Compare the latest price with the opening price for the requested period.
   return {
     percentage: referencePrice === 0 ? 0 : ((currentPrice - referencePrice) / referencePrice) * 100,
     currentPrice,
@@ -63,6 +71,7 @@ export async function fetchBinanceCandles(
   interval: ChartInterval | '1d',
   limit = 500,
 ): Promise<MarketCandle[]> {
+  // Ask Binance for enough candles to give the chart useful history before the websocket starts.
   const params = new URLSearchParams({
     symbol: symbol.toUpperCase(),
     interval,
@@ -76,13 +85,15 @@ export async function fetchBinanceCandles(
 
   const klines = (await response.json()) as BinanceKline[];
   const now = Date.now();
+  // The final REST candle may still be forming, so only expose candles whose close time has passed.
   return klines.map(toCandle).filter((candle, index) => {
     const rawKline = klines[index];
     return rawKline[6] <= now;
   });
 }
 
-export async function fetchBitcoinMarketData(symbol = 'BTCUSDT', interval: ChartInterval = '1m') {
+export async function fetchMarketData(symbol: string, interval: ChartInterval = '1m'): Promise<MarketData> {
+  // Load chart history and daily reference candles together so the initial store update is complete.
   const [candles, dailyCandles] = await Promise.all([
     fetchBinanceCandles(symbol, interval),
     fetchBinanceCandles(symbol, '1d', 31),
@@ -90,6 +101,7 @@ export async function fetchBitcoinMarketData(symbol = 'BTCUSDT', interval: Chart
   const currentPrice = candles.at(-1)?.close ?? 0;
   const latestDailyIndex = dailyCandles.length - 1;
 
+  // Keep the chart candles separate from summary values that other dashboard components can consume later.
   return {
     candles,
     volume: candles.at(-1)?.volume ?? 0,
@@ -107,16 +119,18 @@ export async function fetchBitcoinMarketData(symbol = 'BTCUSDT', interval: Chart
   };
 }
 
-export function subscribeToBitcoinCandles(
+export function subscribeToCandles(
   symbol: string,
   interval: ChartInterval,
   onCandle: (candle: MarketCandle) => void,
 ) {
+  // Binance sends updates for the currently forming candle; the store replaces it until its time changes.
   const socket = new WebSocket(
     `${BINANCE_STREAM_URL}/${symbol.toLowerCase()}@kline_${interval}`,
   );
 
   socket.onmessage = (event) => {
+    // Normalize the websocket kline payload to the same shape returned by the REST endpoint.
     const message = JSON.parse(event.data) as {
       k: { t: number; o: string; h: string; l: string; c: string; v: string };
     };
@@ -131,5 +145,6 @@ export function subscribeToBitcoinCandles(
     });
   };
 
+  // Return a disposer so changing intervals or unmounting the chart closes the old stream.
   return () => socket.close();
 }
