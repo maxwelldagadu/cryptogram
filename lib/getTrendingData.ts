@@ -1,6 +1,4 @@
 
-  // Websocket URL
-export  let ws: any;
 
 export function getTrendingData(coin:string){
   // Fetches the trending crypto data

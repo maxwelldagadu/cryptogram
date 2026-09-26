@@ -1,4 +1,5 @@
 import CryptoInsight from "@/components/crypto-insight";
+import TrendingNews from "@/components/trending-news";
 import { Metadata } from "next";
 
 
@@ -11,7 +12,9 @@ export const metadata: Metadata = {
 export default function Home(){
   return (
     <div className="flex min-w-0 justify-center md:justify-between items-center gap-0 md:20">
-      <p className="w-80 hidden md:block">Home hfhhhhh</p>
+      <div className="w-80 hidden md:block">
+        <TrendingNews/>
+      </div>
       <div className="min-w-0 flex-1 bg-background-gray">
         <CryptoInsight/>
       </div>

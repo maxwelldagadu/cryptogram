@@ -13,7 +13,6 @@ import ItcVisual from '@/resources/svgs/litecoin.png';
 import EthVisual from '@/resources/svgs/etherum.png';
 import SolVisual from '@/resources/svgs/solana.svg';
 import { useEffect,useState } from "react";
-import { ws } from '@/lib/getTrendingData';
 import TrendSuspense from '@/suspense/trendSuspense';
 import type { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Chart from '@/components/chart';
@@ -32,7 +31,7 @@ export default function CryptoInsight() {
   const cryptoCoin = myStore(state => state.marketData)['BTCUSDT'];
   const getVolume = Math.floor(cryptoCoin?.volume);
   const volume = formatNumber(getVolume);
-  
+
   // Percentage timrframe change
   const trend = cryptoCoin?.percentageTrend;
   
@@ -65,7 +64,7 @@ export default function CryptoInsight() {
 
     trendingData();
 
-    return () => ws.close();
+    // return () => ws.close();
   },[]);
 
 
