@@ -43,6 +43,8 @@ export default function Chart() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const symbol = myStore((state) => state.activeSymbol);
+  const chartCoin = myStore((state) => state.chartCoin);
+  const setChartCoin = myStore((state) => state.setChartCoin);
 	const marketData = myStore((state) => state.marketData[symbol]);
 	const setMarketData = myStore((state) => state.setMarketData);
 	const updateCandle = myStore((state) => state.updateCandle);
@@ -99,6 +101,7 @@ export default function Chart() {
 				seriesRef.current?.setData(marketData.candles.map(toChartCandle));
 				chartRef.current?.timeScale().fitContent();
 				closeSocket = subscribeToCandles(symbol, interval, (candle) => updateCandle(symbol, candle));
+        setChartCoin(symbol);
 				setIsLoading(false);
 			})
 			.catch((error) => {
@@ -124,11 +127,11 @@ export default function Chart() {
 	}, [candles]);
 
 	return (
-		<section className="w-full min-w-0 h-full overflow-hidden rounded-2xl bg-black pt-3 px-1 pb-1 md:p-5" aria-label={`${symbol} price chart`}>
+		<section className="w-full min-w-0 h-full overflow-hidden rounded-2xl bg-black pt-3 px-1 pb-1 md:p-5" aria-label={`${chartCoin} price chart`}>
 			<div className="mb-4 flex flex-wrap items-center justify-between gap-3">
 				<div>
-					<h2 className="font-mono text-sm font-medium text-white md:text-base">{symbol}</h2>
-					<p className="font-mono text-[10px] md:text-[12px] text-primary-gray">Live {symbol} market data</p>
+					<h2 className="font-mono text-sm font-medium text-white md:text-base">{chartCoin}</h2>
+					<p className="font-mono text-[10px] md:text-[12px] text-primary-gray">Live {chartCoin} market data</p>
 				</div>
 				<div className="flex flex-wrap gap-1" role="group" aria-label="Chart interval">
 					{intervals.map((option) => (

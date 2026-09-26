@@ -6,15 +6,17 @@ interface Store {
   blobImage: string,
   profileImage: File | null,
   currentUserSession: string | null,
+  chartCoin: string,
+  marketData: Record<string, MarketData>,
+  activeSymbol: string,
   setAuthError: (errorData: string | null) => void,
   setCurrentUserSession: (sesssionID: string | null) => void,
   setBlobImage: (blob: string) => void,
   setProfileImage: (profileImage: File | null) => void,
-  activeSymbol: string,
   setActiveSymbol: (symbol: string) => void,
-  marketData: Record<string, MarketData>,
   setMarketData: (symbol: string, marketData: MarketData) => void,
-  updateCandle: (symbol: string, candle: MarketCandle) => void
+  updateCandle: (symbol: string, candle: MarketCandle) => void ,
+  setChartCoin: (coin:string) => void,
 }
 
 export const myStore = create<Store>((set) => ({
@@ -24,6 +26,7 @@ export const myStore = create<Store>((set) => ({
   profileImage: null,
   activeSymbol: 'BTCUSDT',
   marketData: {},
+  chartCoin: 'BTCUSDT',
 
   setAuthError: (errorData: string | null) => set({authError: errorData}),
 
@@ -35,9 +38,11 @@ export const myStore = create<Store>((set) => ({
 
   setActiveSymbol: (symbol) => set({ activeSymbol: symbol }),
 
+  setChartCoin: (coin:string) => set({chartCoin:coin}),
+
 	// Store each symbol separately so loading one chart never overwrites another coin's data.
   setMarketData: (symbol, marketData) => set((state) => ({
-    marketData: { ...state.marketData, [symbol]: marketData },
+    marketData: { ...state.marketData, [symbol]: marketData},
   })),
 
 	// Replace the active candle while it is forming, or append a new candle when its timestamp changes.
