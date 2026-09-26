@@ -92,7 +92,7 @@ export default function TrendingNews() {
             <div className="divide-y divide-white/10">
               {articles.map((article) => (
                 <a
-                  className="group flex gap-3 p-3 transition-colors hover:bg-white/[0.04]"
+                  className="group flex gap-3 p-3 transition-colors hover:bg-white/4"
                   href={article.url}
                   key={article.id}
                   rel="noreferrer"

@@ -64,23 +64,23 @@ export default function UserProfile() {
           >
             <Avatar>
               <AvatarImage className="object-cover" src={userImage || placeholderImage} alt="user-profile-image"/>
-              <AvatarFallback className="text-muted-foreground text-base">{fallbackName}</AvatarFallback>
+              <AvatarFallback className="text-muted-foreground  md:text-base">{fallbackName}</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
 
           <DropdownMenuContent>
             <DropdownMenuGroup>
-              <DropdownMenuLabel className="line-clamp-1 text-muted-foreground text-sm font-mono text-nowrap">
+              <DropdownMenuLabel className="line-clamp-1 text-[12px] text-muted-foreground md:text-sm font-mono text-nowrap">
                 {userName?.split(' ').at(0)}
               </DropdownMenuLabel>
               <DropdownMenuSeparator/>
               <DropdownMenuItem>
-                <Link href="/update-profile" className="text-nowrap p-0 cursor-pointer bg-transparent text-muted-foreground text-sm font-mono hover:bg-transparent">
+                <Link href="/update-profile" className="text-nowrap p-0 cursor-pointer bg-transparent text-muted-foreground text-[12px] md:text-sm font-mono hover:bg-transparent">
                   Update Profile
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Button onClick={UserLogout} className="sm:hidden p-0 cursor-pointer bg-transparent text-muted-foreground text-sm font-mono hover:bg-transparent">
+                <Button onClick={UserLogout} className="sm:hidden p-0 cursor-pointer bg-transparent text-muted-foreground text-[12px] md:text-sm font-mono hover:bg-transparent">
                    <LogOut/> Logout
                 </Button>
               </DropdownMenuItem>
@@ -88,7 +88,7 @@ export default function UserProfile() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Button onClick={UserLogout} className="btn h-full hidden sm:block">
+        <Button onClick={UserLogout} className="btn h-full hidden sm:block text-[12px] md:text-sm">
           LogOut
         </Button>
       </div>
