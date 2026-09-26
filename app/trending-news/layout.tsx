@@ -1,16 +1,13 @@
-'use client';
-
 import Link from "next/link";
-import { ReactNode } from "react";
-import MostPopular from "@/components/trending-news";
+import type { ReactNode } from "react";
 
 
-export default function UpdateProfileLayout({children}: {children: ReactNode}){
+export default function TrendingNewsLayout({children}: {children: ReactNode}){
   
   return(
-     <div className="flex justify-center items-center relative h-full w-full">
+     <div className="flex flex-col justify-center items-center h-full w-full">
       <Link href="/" className="btn absolute top-2 left-2 z-12">Go Back</Link>
-      <MostPopular/>
+      {children}
     </div>
   )
 

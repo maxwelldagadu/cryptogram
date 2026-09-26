@@ -52,8 +52,8 @@ export default function UserProfile() {
   
   return (
     <div  className="w-100 lg:w-200 flex justify-end items-center rounded-4xl">
-       <Link href="/most-popular" className="sm:hidden text-nowrap btn">
-          Most Popular
+       <Link href="/trending-news" className="sm:hidden text-nowrap btn">
+          Trending News
         </Link>
 
       <div className="flex justify-end items-center gap-2 w-15 font-mono font-medium">
