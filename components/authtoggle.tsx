@@ -15,7 +15,7 @@ export default function AuthToggle() {
   return (
     <div  className="w-100 lg:w-200 flex justify-end items-center gap-5 ">
       <Link href="/trending-news" className="sm:hidden text-nowrap btn">
-        Trending News
+        News
       </Link>
 
       <div className="sm:hidden">
