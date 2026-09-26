@@ -157,9 +157,9 @@ cryptogram/
 ├── prisma.config.ts          # Prisma configuration
 ├── README.md                 # Project documentation
 └── tsconfig.json             # TypeScript config
+```
 
-
-## Why This App Is Useful
+### Why This App Is Useful
 
 CryptoGram is useful for users who want:
 
@@ -172,7 +172,7 @@ CryptoGram is useful for users who want:
 It is especially valuable for casual traders, crypto newcomers, and active market watchers who want a fast overview with real-time data.
 
 
-## Conclusion
+### Conclusion
 
 CryptoGram combines live crypto data, trending news, and user management into a single responsive dashboard. It delivers a practical experience for people who want market awareness, fast updates, and a cleaner way to monitor the crypto landscape.
 
