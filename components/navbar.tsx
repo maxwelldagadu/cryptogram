@@ -8,6 +8,7 @@ import UserProfile from "./userprofile";
 import { CheckUserLoggedIn } from "@/server-actions/current-user";
 import { myStore } from "@/store/zodstore";
 import { useEffect } from "react";
+import logo from '@/app/icon.png';
 
 export default function Navbar(){
  
@@ -31,11 +32,11 @@ export default function Navbar(){
       <div className="w-100 lg:w-200 flex justify-start items-center">
         <Link href="/" className="flex justify-start items-center">
           <Image 
-          src="/icon.png" 
+          src={logo}
           alt="crytogram logo" 
           width={90} height={90} 
           className="size-10 sm:size-13 md:size-12 lg:size-14 xl:size-15"/>
-          <h1 className="text-base font-mono md:text-xl lg:text-2xl text-accent-yellow">CryptoGram</h1>
+          <h1 className="text-base font-mono md:text-xl lg:text-2xl text-accent-yellow">CRYPTOGRAM</h1>
         </Link>
       </div>
       
