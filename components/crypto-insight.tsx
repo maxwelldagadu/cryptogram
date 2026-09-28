@@ -22,17 +22,21 @@ import { Skeleton } from "./ui/skeleton";
 
 
 
+
 export default function CryptoInsight() {
   
   const [data,setData] = useState<Record<string, unknown>[]>([]);
   const [showTrending,setTrending] =  useState<boolean>(false);
 
+  // Current crypto
+  const activeSymbol = myStore(state => state.activeSymbol);
+  
   // Get the current crypto
-  const cryptoCoin = myStore(state => state.marketData)['BTCUSDT'];
+  const cryptoCoin = myStore(state => state.marketData)[activeSymbol];
   const getVolume = Math.floor(cryptoCoin?.volume);
   const volume = formatNumber(getVolume);
 
-  // Percentage timrframe change
+  // Percentage timeframe change
   const trend = cryptoCoin?.percentageTrend;
   
 
@@ -40,6 +44,7 @@ export default function CryptoInsight() {
   useEffect(() => {
   
     async function trendingData(){
+     
       // Fetch the coin requests in parallel so the cards appear as one coordinated update.
       const [bitcoin,litecoin,etherum,solana] = await Promise.all(
         [
