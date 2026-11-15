@@ -29,10 +29,10 @@ export default function CryptoInsight() {
   const [showTrending,setTrending] =  useState<boolean>(false);
 
   // Current crypto
-  const activeSymbol = myStore(state => state.activeSymbol);
-  
+  const chartCoin = myStore(state => state.chartCoin;
+
   // Get the current crypto
-  const cryptoCoin = myStore(state => state.marketData)[activeSymbol];
+  const cryptoCoin = myStore(state => state.marketData)[chartCoin];
   const getVolume = Math.floor(cryptoCoin?.volume);
   const volume = formatNumber(getVolume);
 
