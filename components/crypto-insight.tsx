@@ -29,7 +29,7 @@ export default function CryptoInsight() {
   const [showTrending,setTrending] =  useState<boolean>(false);
 
   // Current crypto
-  const chartCoin = myStore(state => state.chartCoin;
+  const chartCoin = myStore(state => state.chartCoin);
 
   // Get the current crypto
   const cryptoCoin = myStore(state => state.marketData)[chartCoin];

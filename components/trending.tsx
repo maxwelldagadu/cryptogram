@@ -14,7 +14,7 @@ interface TrendData{
 }
 
 export default function Trending({logo,coin,shortname,trend,price,trendVisual}: TrendData) {
-  // Converts the trend nto a number
+  // Converts the trend into a number
   const marketTrend = Number(trend);
 
   return (
