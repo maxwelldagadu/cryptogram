@@ -50,7 +50,7 @@ export default function AuthToggle() {
         <Link href="/signin" className="btn">
           SignIn
         </Link>
-        <Link href="/signin" className="btn">
+        <Link href="/signup" className="btn">
           SignUp
         </Link>
       </div>
